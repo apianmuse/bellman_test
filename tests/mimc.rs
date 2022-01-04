@@ -5,32 +5,32 @@ use rand::{thread_rng, Rng};
 use std::time::{Duration, Instant};
 
 // Bring in some tools for using pairing-friendly curves
-use bellman_ce::pairing::{
+use muse_bellman_ce::pairing::{
     Engine  
 };
 
-use bellman_ce::pairing::ff::{
+use muse_bellman_ce::pairing::ff::{
     Field,
 };
 
 // We're going to use the BLS12-381 pairing-friendly elliptic curve.
-use bellman_ce::pairing::bls12_381::{
+use muse_bellman_ce::pairing::bls12_381::{
     Bls12
 };
 
-use bellman_ce::pairing::bn256::{
+use muse_bellman_ce::pairing::bn256::{
     Bn256
 };
 
 // We'll use these interfaces to construct our circuit.
-use bellman_ce::{
+use muse_bellman_ce::{
     Circuit,
     ConstraintSystem,
     SynthesisError
 };
 
 // We're going to use the Groth16 proving system.
-use bellman_ce::groth16::{
+use muse_bellman_ce::groth16::{
     Proof,
     generate_random_parameters,
     prepare_verifying_key,
@@ -46,8 +46,8 @@ const MIMC_ROUNDS: usize = 1000000;
 #[cfg(feature = "marlin")]
 #[test]
 fn test_bench_marlin_prover() {
-    use bellman_ce::pairing::bn256::{Bn256};
-    use bellman_ce::marlin::prover::test_over_engine_and_circuit_with_proving_key;
+    use muse_bellman_ce::pairing::bn256::{Bn256};
+    use muse_bellman_ce::marlin::prover::test_over_engine_and_circuit_with_proving_key;
     {
         // This may not be cryptographically safe, use
         // `OsRng` (for example) in production software.
@@ -74,8 +74,8 @@ fn test_bench_marlin_prover() {
 #[cfg(feature = "marlin")]
 #[test]
 fn test_create_marlin_proving_key() {
-    use bellman_ce::pairing::bn256::{Bn256};
-    use bellman_ce::marlin::prover::create_test_keys;
+    use muse_bellman_ce::pairing::bn256::{Bn256};
+    use muse_bellman_ce::marlin::prover::create_test_keys;
     {
         // This may not be cryptographically safe, use
         // `OsRng` (for example) in production software.
@@ -402,7 +402,7 @@ fn test_mimc_bn256() {
 #[cfg(feature = "plonk")]
 #[test]
 fn test_mimc_transpilation_into_plonk() {
-    use bellman_ce::plonk::adaptor::alternative::Transpiler;
+    use muse_bellman_ce::plonk::adaptor::alternative::Transpiler;
     // This may not be cryptographically safe, use
     // `OsRng` (for example) in production software.
     let rng = &mut thread_rng();
