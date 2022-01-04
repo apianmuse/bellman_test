@@ -18,6 +18,8 @@ use super::utils::*;
 
 use crate::plonk::commitments::transcript::*;
 
+use std::time::Instant;
+
 //use dusk_bls12_381::{BlsScalar,G1Affine,G1Projective}; //
 
 pub fn verify<E: Engine, P: PlonkConstraintSystemParams<E>, T: Transcript<E::Fr>>(
@@ -122,7 +124,6 @@ pub fn verify_and_aggregate<E: Engine, P: PlonkConstraintSystemParams<E>, T: Tra
     use crate::pairing::CurveAffine;
     use crate::pairing::CurveProjective;
     
-    use std::time::Instant;
     let start = Instant::now();
     assert!(P::CAN_ACCESS_NEXT_TRACE_STEP);
 
@@ -177,7 +178,7 @@ pub fn verify_and_aggregate<E: Engine, P: PlonkConstraintSystemParams<E>, T: Tra
     }
 
     let z = transcript.get_challenge();
-    println!("z = {:#?}",z);
+    //println!("z = {:#?}",z);
 
     let mut z_by_omega = z;
     z_by_omega.mul_assign(&domain.generator);

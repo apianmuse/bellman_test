@@ -1,5 +1,7 @@
 use super::*;
 
+use std::time::Instant;
+
 pub(crate) enum PrecomputationsForPolynomial<'a, F: PrimeField> {
     Borrowed(&'a Polynomial<F, Values>),
     Owned(Polynomial<F, Values>),
@@ -656,7 +658,6 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
         ThirdProverMessage<E, PlonkCsWidth4WithNextStepParams>
     ), SynthesisError>
     {
-        use std::time::Instant;
 
         let z_in_monomial_form = second_state.z_in_monomial_form;
 
