@@ -124,7 +124,7 @@ pub fn verify_and_aggregate<E: Engine, P: PlonkConstraintSystemParams<E>, T: Tra
     use crate::pairing::CurveAffine;
     use crate::pairing::CurveProjective;
     
-    let start = Instant::now();
+    // let start = Instant::now();
     assert!(P::CAN_ACCESS_NEXT_TRACE_STEP);
 
     let mut transcript = if let Some(p) = transcript_init_params {
@@ -495,16 +495,16 @@ pub fn verify_and_aggregate<E: Engine, P: PlonkConstraintSystemParams<E>, T: Tra
 
     let pair_with_generator = pair_with_generator.into_affine();
     let pair_with_x = pair_with_x.into_affine();
-    println!("precompute time: {:?} us", start.elapsed().as_micros());// us
+    // println!("precompute time: {:?} us", start.elapsed().as_micros());// us
 
-    let start2 = Instant::now();
+    // let start2 = Instant::now();
     let valid = E::final_exponentiation(
         &E::miller_loop(&[
             (&pair_with_generator.prepare(), &verification_key.g2_elements[0].prepare()),
             (&pair_with_x.prepare(), &verification_key.g2_elements[1].prepare())
         ])
     ).unwrap() == E::Fqk::one();
-    println!("pairing time: {:?} us", start2.elapsed().as_micros());// us
+    // println!("pairing time: {:?} us", start2.elapsed().as_micros());// us
 
     Ok((valid, [pair_with_generator, pair_with_x]))
 }
