@@ -1,7 +1,7 @@
 [package]
 authors = ["Sean Bowe <ewillbefull@gmail.com>", "Alex Vlasov <alex.m.vlasov@gmail.com>", "Alex Gluchowski <alex@gluchowski.net"]
 license = "MIT/Apache-2.0"
-name = "muse_bellman_ce"
+name = "bellman_ce"
 version = "0.3.2"
 edition = "2018"
 
