@@ -656,6 +656,8 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
         ThirdProverMessage<E, PlonkCsWidth4WithNextStepParams>
     ), SynthesisError>
     {
+        use std::time::Instant;
+
         let z_in_monomial_form = second_state.z_in_monomial_form;
 
         // those are z(x*Omega) formally
@@ -687,6 +689,8 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
         let mut witness_ldes_on_coset = vec![];
         let mut witness_next_ldes_on_coset = vec![];
  
+        println!("setup.n = {:#?}", setup.n);
+        println!("系数A: witness_polys_in_monomial_form[0] = {:#?}", witness_polys_in_monomial_form[0]); //系数
         for (idx, monomial) in witness_polys_in_monomial_form.iter().enumerate() {
             // this is D polynomial and we need to make next
             if idx == <PlonkCsWidth4WithNextStepParams as PlonkConstraintSystemParams<E>>::STATE_WIDTH - 1 {
@@ -703,15 +707,20 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
                 witness_next_ldes_on_coset.push(lde);
             }
 
+
+            let subtime = Instant::now();
             let lde = monomial.clone().bitreversed_lde_using_bitreversed_ntt(
                 &worker, 
                 LDE_FACTOR, 
                 precomputed_omegas.as_ref(), 
                 &coset_factor
             )?;
+            println!("bitreversed_lde_using_bitreversed_ntt time: {:?} us", subtime.elapsed().as_micros());
+            // println!("monomial = {:#?}", monomial); //系数
+            // println!("lde = {:#?}", lde);           //点值
             witness_ldes_on_coset.push(lde);
         }
-
+        println!("点值A: witness_ldes_on_coset[0] = {:#?}",  witness_ldes_on_coset[0]); //点值
 
         let SecondVerifierMessage { alpha, beta, gamma, .. } = second_verifier_message;
 
@@ -746,6 +755,8 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
 
             // Q_A * A
             let mut tmp = witness_ldes_on_coset[0].clone();
+            println!("系数B: setup.selector_polynomials[0] = {:#?}", setup.selector_polynomials[0]);  //系数
+            //系数setup.selector_polynomials[index]转点值a_selector.as_ref()
             let a_selector = get_precomputed_selector_lde_for_index(
                 0, 
                 required_domain_size, 
@@ -754,6 +765,7 @@ impl<E: Engine> ProverAssembly4WithNextStep<E> {
                 precomputed_omegas,
                 &worker
             )?;
+            println!("点值B: a_selector.as_ref() = {:#?}", a_selector.as_ref());  //点值
             tmp.mul_assign(&worker, &a_selector.as_ref());
             t_1.add_assign(&worker, &tmp);
             drop(a_selector);

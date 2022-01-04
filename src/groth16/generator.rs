@@ -216,6 +216,7 @@ pub fn generate_parameters<E, C>(
     }
 
     elog_verbose!("Making {} powers of tau", assembly.num_constraints);
+    println!("Making {} powers of tau", assembly.num_constraints); /////
     // Create bases for blind evaluation of polynomials at tau
     let powers_of_tau = vec![Scalar::<E>(E::Fr::zero()); assembly.num_constraints];
     let mut powers_of_tau = EvaluationDomain::from_coeffs(powers_of_tau)?;
